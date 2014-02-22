@@ -1,0 +1,28 @@
+<head>
+  <title>tigger</title>
+</head>
+
+<body>
+  {{> files}}
+  {{> tags}}
+</body>
+
+
+<template name="tags">
+  {{#each tag}}
+    <div class="well">
+      {{_id}}
+    </div>
+  {{/each}}
+</template>
+
+<template name="files">
+  {{#each files}}
+    <div class="well">
+      {{name}}
+      <div class="well">
+        {{tags}}
+      </div>
+    </div>
+  {{/each}}
+</template>

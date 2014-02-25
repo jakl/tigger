@@ -12,13 +12,16 @@ if Meteor.isServer
   Meteor.startup ->
     path = Meteor.require 'path'
     fs = Meteor.require 'fs'
-    sharedFilesPath = process.env.PWD + path.sep + 'files'
+    sharedFilesPath = [process.env.PWD, 'public', 'files'].join path.sep
     allTags = []
     walker = Meteor.require('walk').walk(sharedFilesPath)
     walker.on 'names', Meteor.bindEnvironment (root, files)->
-      tags = root.replace(sharedFilesPath, '').split(path.sep).splice(1)
+      localRoot = root.replace sharedFilesPath, ''
+      tags = localRoot.split(path.sep).splice(1)
       allTags = _.union(allTags, tags)
       files = files.filter (f)-> fs.statSync(path.join root, f).isFile()
-      Files.insert name: file, tags: tags for file in files
+      for file in files
+        filePath = 'files' + localRoot + path.sep + path.normalize(file)
+        Files.insert name: file, tags: tags, path: filePath
     walker.on 'end', Meteor.bindEnvironment ->
       Tags.insert _id: tag for tag in allTags

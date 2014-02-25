@@ -4,25 +4,14 @@
 
 <body>
   {{> files}}
-  {{> tags}}
 </body>
-
-
-<template name="tags">
-  {{#each tag}}
-    <div class="well">
-      {{_id}}
-    </div>
-  {{/each}}
-</template>
 
 <template name="files">
   {{#each files}}
-    <div class="well">
-      {{name}}
+    <a href="{{path}}">
       <div class="well">
-        {{tags}}
+        <span class='btn'>{{name}}</span> {{tags}}
       </div>
-    </div>
+    </a>
   {{/each}}
 </template>

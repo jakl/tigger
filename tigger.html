@@ -3,8 +3,16 @@
 </head>
 
 <body>
+  {{> upload}}
   {{> files}}
 </body>
+
+<template name="upload">
+  <div class="fileUpload btn btn-primary">
+    <span>Upload</span>
+    <input type="file" class="upload" />
+  </div>
+</template>
 
 <template name="files">
   {{#each files}}

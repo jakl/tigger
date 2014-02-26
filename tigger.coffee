@@ -2,6 +2,7 @@ Tags = new Meteor.Collection 'tags'
 Files = new Meteor.Collection 'files'
 
 if Meteor.isClient
+  Meteor.subscribe 'files'
   Template.files.files = -> Files.find()
 
   Template.upload.events =
@@ -17,8 +18,13 @@ if Meteor.isServer
   fs = Meteor.require 'fs'
   sharedFilesPath = [process.env.PWD, 'public', 'files'].join path.sep
 
+  userAllowed = (id)->
+    Meteor.users.findOne(id)?.services.twitter.screenName in whitelist
+
   Files.remove {}
   Tags.remove {}
+
+  Meteor.publish 'files', -> Files.find() if userAllowed(this.userId)
 
   Meteor.startup ->
     allTags = []
@@ -39,4 +45,10 @@ if Meteor.isServer
 
   Meteor.methods
     'file-upload': (fileInfo, fileData)->
-      fs.writeFile sharedFilesPath + path.sep + fileInfo.name, fileData
+      if userAllowed(this.userId)
+        fs.writeFile sharedFilesPath + path.sep + fileInfo.name, fileData
+
+  whitelist = [
+    'jakl'
+    'jagerhex'
+  ]

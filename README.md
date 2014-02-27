@@ -39,7 +39,9 @@ Host
 
 After setting up development, `git clone https://github.com/jakl/Meteor-SSL-proxy` to your workspace
 
-Inside Meteor-SSL-proxy, run `sudo ./main.js` - sudo is because it connects to a restricted access port, 443
+Inside Meteor-SSL-proxy, run `npm install`
+
+Also run `sudo ./main.js` - sudo is because it connects to a restricted access port, 443
 
 Kill the development `mrt` and instead, run `ROOT_URL=https://YOUR_IP_OR_HOST_NAME mrt`
 

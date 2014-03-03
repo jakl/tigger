@@ -37,7 +37,7 @@ if Meteor.isServer
       files = files.filter (f)-> fs.statSync(path.join root, f).isFile()
 
       for file in files
-        filePath = 'files' + localRoot + path.sep + path.normalize(file)
+        filePath = '/files' + localRoot + path.sep + path.normalize(file)
         Files.insert name: file, tags: tags, path: filePath
 
     walker.on 'end', Meteor.bindEnvironment ->

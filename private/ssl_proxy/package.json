@@ -1,0 +1,18 @@
+{
+  "name": "Meteor-SSL-proxy",
+  "description": "fork of easy ssl proxy for meteor",
+  "version": "0.0.1",
+  "start": "sudo ./main.js",
+  "homepage": "https://github.com/jakl/Meteor-SSL-proxy",
+  "author": "github.com/Tarangp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakl/Meteor-SSL-proxy.git"
+  },
+  "dependencies": {
+    "node-http-proxy": "https://github.com/nodejitsu/node-http-proxy/archive/caronte.tar.gz"
+  },
+  "scripts": {
+    "postinstall": "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key -out cert -subj '/'"
+  }
+}

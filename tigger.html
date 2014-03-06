@@ -23,10 +23,8 @@
 
 <template name="files">
   {{#each files}}
-    <a href="{{path}}">
-      <div class="well">
-        <span class='btn'>{{name}}</span> {{tags}}
-      </div>
-    </a>
+    <div class="well">
+      <span class="btn" data-path="{{path}}">{{name}}</span> {{tags}}
+    </div>
   {{/each}}
 </template>

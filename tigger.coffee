@@ -19,7 +19,7 @@ if Meteor.isClient
 if Meteor.isServer
   path = Meteor.require 'path'
   fs = Meteor.require 'fs'
-  sharedFilesPath = [process.env.PWD, 'public', 'files'].join '/'
+  sharedFilesPath = [process.env.PWD, 'public', '.#files'].join '/'
 
   userAllowed = (id)->
     Meteor.users.findOne(id)?.services.twitter.screenName in whitelist

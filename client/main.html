@@ -4,9 +4,11 @@
 
 <body>
   <div class="clearfix">
-    <div class="pull-left">
-      {{> upload}}
-    </div>
+    {{#if currentUser}}
+      <div class="pull-left">
+        {{> upload}}
+      </div>
+    {{/if}}
     <div class="pull-right">
       {{loginButtons}}
     </div>

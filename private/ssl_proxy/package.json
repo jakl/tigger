@@ -10,6 +10,8 @@
     "url": "https://github.com/jakl/Meteor-SSL-proxy.git"
   },
   "dependencies": {
+    "moment": "*",
+    "colors": "*",
     "node-http-proxy": "https://github.com/nodejitsu/node-http-proxy/archive/caronte.tar.gz"
   },
   "scripts": {

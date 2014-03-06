@@ -17,3 +17,9 @@
 .login-text-and-button {
   margin: 10px;
 }
+.file {
+  margin: 5px;
+  padding: 5px;
+  background-color: #eef;
+  border-radius: 5px;
+}

@@ -11,9 +11,9 @@ Organization is done by tagging. A file called hyde_park.png might be tagged wit
 Overview
 ========
 
-Tigger has a magic directory that it shares: ./public/files
+Tigger has a magic directory that it shares. Either the environment variable SHARED_PATH or ./public/.#files
 
-This directory should probably be a symlink to your largest harddrive or RAID array to maximize the number of files you can store.
+This directory should probably be your largest harddrive or RAID array to maximize the number of files you can store.
 
 This directory could also be your [Bittorrent Sync](http://www.bittorrent.com/sync) directory, so you can more efficiently backup your files, p2p, encrypted & authenticated, with your select friends. Your friends can then run their own Tigger instances to distribute the load on the web UI, but have the same files continuously synced among all Tigger instances. All without the NSA interfering.
 
@@ -37,9 +37,7 @@ From within the project directory run `mrt`
 Host
 ====
 
-After setting up development, `git clone https://github.com/jakl/Meteor-SSL-proxy` to your workspace
-
-Inside Meteor-SSL-proxy, run `npm install`
+Inside ./private/ssl_proxy/, run `npm install`
 
 Also run `sudo ./main.js` - sudo is because it connects to a restricted access port, 443
 

@@ -5,15 +5,22 @@ Meteor.startup ->
   allTags = []
   walker = Meteor.require('walk').walk(sharedFilesPath)
 
-  walker.on 'names', Meteor.bindEnvironment (root, files)->
-    localRoot = root.replace sharedFilesPath, ''
-    tags = localRoot.split('/').splice(1)
-    allTags = _.union(allTags, tags)
-    files = files.filter (f)-> FS.statSync(Path.join root, f).isFile()
+  walker.on 'names', Meteor.bindEnvironment (fullPath, files)->
+    localPath = fullPath.replace sharedFilesPath, ''
+    tags = getTags localPath
+    allTags = _.union allTags, tags
+    files = files.filter (file)-> FS.statSync(fullPath + '/' + file).isFile()
 
     for file in files
-      filePath = localRoot + '/' + Path.normalize(file)
-      Files.insert name: file, tags: tags, path: filePath
+      console.log localPath
+      Files.insert name: file, tags: tags, path: localPath + '/' + file
 
   walker.on 'end', Meteor.bindEnvironment ->
     Tags.insert _id: tag for tag in allTags
+
+  Meteor.require('watchr').watch
+    path: sharedFilesPath
+    listener: (changeType, filePath)->
+      console.log 'Changed with ', changeType, ' : ', filePath
+
+  getTags = (localPath) -> localPath.split('/').splice 1

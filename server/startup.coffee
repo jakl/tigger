@@ -6,13 +6,13 @@ Meteor.startup ->
   walker = Meteor.require('walk').walk(sharedFilesPath)
 
   walker.on 'names', Meteor.bindEnvironment (fullPath, files)->
-    localPath = fullPath.replace sharedFilesPath, ''
+    localPath = fullToLocal fullPath
     tags = getTags localPath
     allTags = _.union allTags, tags
     files = files.filter (file)-> FS.statSync(fullPath + '/' + file).isFile()
 
     for file in files
-      console.log localPath
+      console.log localPath + '/' + file
       Files.insert name: file, tags: tags, path: localPath + '/' + file
 
   walker.on 'end', Meteor.bindEnvironment ->
@@ -20,7 +20,16 @@ Meteor.startup ->
 
   Meteor.require('watchr').watch
     path: sharedFilesPath
-    listener: (changeType, filePath)->
-      console.log 'Changed with ', changeType, ' : ', filePath
+    listener: Meteor.bindEnvironment (changeType, fullPath)->
+      localPath = fullToLocal fullPath
+      console.log 'Change type is', changeType
+      switch changeType
+        when 'create'
+          name = Path.basename localPath
+          tags = getTags Path.dirname localPath
+          Files.insert name: name, tags: tags, path: localPath
+        when 'delete'
+          Files.remove path: localPath
 
-  getTags = (localPath) -> localPath.split('/').splice 1
+  getTags = (localPath) -> localPath.split('/').splice(2)
+  fullToLocal = (fullPath) -> fullPath.replace sharedFilesPath, ''

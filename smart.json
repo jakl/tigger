@@ -1,6 +1,8 @@
 {
   "packages": {
     "npm": {},
-    "router": {}
+    "router": {},
+    "bootstrap-3": {},
+    "accounts-ui-bootstrap-3": {}
   }
 }

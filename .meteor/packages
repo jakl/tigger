@@ -9,8 +9,8 @@ npm
 coffeescript
 underscore
 stylus
-bootstrap
 accounts-twitter
-accounts-ui
 router
 jquery
+bootstrap-3
+accounts-ui-bootstrap-3

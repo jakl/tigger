@@ -5,30 +5,29 @@
 </head>
 
 <body>
-  <div class="clearfix">
-    {{#if currentUser}}
-      <div class="pull-left">
-        {{> upload}}
-      </div>
-    {{/if}}
-    <div class="pull-right">
-      {{loginButtons}}
-    </div>
-  </div>
+  {{> navbar}}
   {{> files}}
 </body>
 
+
 <template name="upload">
-  <div class="fileUpload btn btn-primary">
-    <span>Upload</span>
-    <input type="file" class="upload" />
-  </div>
+  {{#if currentUser}}
+    <button type="button" class="fileUpload btn btn-default btn-sm">
+      <span>Upload</span>
+      <input type="file" class="upload" />
+    </button>
+  {{/if}}
 </template>
 
 <template name="files">
-  {{#each files}}
-    <div class="clearfix pull-left file">
-      <span class="btn" data-path="{{path}}">{{name}}</span> {{tags}}
-    </div>
-  {{/each}}
+  <div class="container">
+    {{#each files}}
+      <div class="clearfix pull-left file">
+        <button type="button" class="btn btn-info" data-path="{{path}}">
+          {{name}}
+        </button>
+        {{tags}}
+      </div>
+    {{/each}}
+  </div>
 </template>

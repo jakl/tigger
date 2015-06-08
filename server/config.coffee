@@ -1,5 +1,5 @@
-@Path = Meteor.require 'path'
-@FS = Meteor.require 'fs'
+@Path = Meteor.npmRequire 'path'
+@FS = Meteor.npmRequire 'fs'
 
 @sharedFilesPath = @Path.resolve(
   process.env.SHARED_PATH or

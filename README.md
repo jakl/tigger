@@ -1,3 +1,8 @@
+WARNING
+=======
+
+This repo is in a broken state. Meteor has been updated but the file upload/download is broken and new libraries for these behaviors with proper auth are needed.
+
 Purpose
 =======
 

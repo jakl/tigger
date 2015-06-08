@@ -6,17 +6,13 @@
 
 <body>
   {{> navbar}}
+  {{> uploadFile}}
   {{> files}}
 </body>
 
 
-<template name="upload">
-  {{#if currentUser}}
-    <button type="button" class="fileUpload btn btn-default btn-sm">
-      <span>Upload</span>
-      <input type="file" class="upload" />
-    </button>
-  {{/if}}
+<template name="uploadFile">
+    {{> upload_bootstrap multiple=true formData=fileUploadAuth }}
 </template>
 
 <template name="files">

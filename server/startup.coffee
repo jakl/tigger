@@ -2,7 +2,15 @@ Meteor.startup ->
   Files.remove {}
   Tags.remove {}
 
-  Meteor.require('walk').walk(sharedFilesPath)
+  UploadServer.init
+    tmpDir: process.env.PWD + '/.uploads/tmp',
+    uploadDir: process.env.PWD + '/public/.#files/',
+    checkCreateDirectories: true
+    validateRequest: (req, res)-> debugger
+    validateFile: (req, res)-> debugger
+
+
+  Meteor.npmRequire('walk').walk(sharedFilesPath)
     .on 'names', Meteor.bindEnvironment (fullPath, files)->
       relativePath = relative fullPath
       tags = getTags relativePath
@@ -12,7 +20,7 @@ Meteor.startup ->
           Files.insert name: file, tags: tags, path: relativePath + '/' + file
       addTag tag for tag in tags
 
-  Meteor.require('watchr').watch
+  Meteor.npmRequire('watchr').watch
     path: sharedFilesPath
     listener: Meteor.bindEnvironment (changeType, fullPath)->
       relativePath = relative fullPath

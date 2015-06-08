@@ -3,7 +3,7 @@ Meteor.methods
     if userAllowed(this.userId)
       FS.writeFile sharedFilesPath + '/' + fileInfo.name, fileData
 
-Meteor.Router.add '/dl', ->
+Router.route '/dl', ->
   if userAllowed @request.query.id
     name = @request.query.name
     path = Path.resolve sharedFilesPath, './' + name
@@ -15,3 +15,4 @@ Meteor.Router.add '/dl', ->
         'Set-Cookie': 'fileDownload=true; path=/'
         FS.readFileSync path
       ]
+, where: 'server'

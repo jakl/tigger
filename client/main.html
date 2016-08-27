@@ -14,14 +14,19 @@
 </template>
 
 <template name="files">
-  <div class="container">
-    {{#each files}}
-      <div class="clearfix pull-left file">
-        <button type="button" class="btn btn-info" data-path="{{path}}">
-          {{name}}
-        </button>
-        {{tags}}
-      </div>
-    {{/each}}
+  <div class="container files">
+
+    {{#if Template.subscriptionsReady}}
+      {{#each files}}
+        <div class="clearfix pull-left file">
+          <button type="button" class="btn btn-info" data-path="{{path}}">
+            {{name}}
+          </button>
+          {{tags}}
+        </div>
+      {{/each}}
+    {{else}}
+      Loading...
+    {{/if}}
   </div>
 </template>

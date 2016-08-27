@@ -1,38 +1,40 @@
-import '/imports/server/publications.js';
-import '/imports/server/file_transfer.js';
-
 import { Meteor } from 'meteor/meteor';
 import walk from 'simple-walk';
-// import { watch } from 'watchr';
+//import { watch } from 'watchr';
 import FS from 'fs';
 import Path from 'path';
-import config from '/imports/server/config.js'
-import collections from '/imports/shared/collections.js'
+import util from '/imports/server/util.js'
+import db from '/imports/shared/db.js'
 
 Meteor.startup(function() {
-  collections.Files.remove({});
-  collections.Tags.remove({});
+  db.Files.remove({});
+  db.Tags.remove({});
 
   UploadServer.init({
     tmpDir: process.env.PWD + '/.uploads/tmp',
     uploadDir: process.env.PWD + '/public/.#files/',
     checkCreateDirectories: true,
     validateRequest: function(req, res) {
-      debugger;
+      console.log('UploadServer#validateRequest req res')
+      console.log(req);
+      console.log(res);
     },
     validateFile: function(req, res) {
-      debugger;
+      console.log('UploadServer#validateFiles req res')
+      console.log(req);
+      console.log(res);
     }
   });
 
 
-  walk.match(config.sharedFilesPath).map(fullPath => {
+  walk.match(util.sharedFilesPath).map(fullPath => {
     let file = Path.basename(fullPath);
     let relativePath = relative(fullPath);
     let tags = getTags(Path.dirname(relativePath));
+
     tags.map(addTag);
 
-    collections.Files.insert({
+    db.Files.insert({
       name: file,
       tags: tags,
       path: relativePath
@@ -41,7 +43,7 @@ Meteor.startup(function() {
 
 
 //   watch({
-//     path: config.sharedFilesPath,
+//     path: util.sharedFilesPath,
 //     listener: Meteor.bindEnvironment(function(changeType, fullPath) {
 //       var i, j, len, len1, name, relativePath, results, results1, tag, tags;
 //       relativePath = relative(fullPath);
@@ -85,7 +87,7 @@ Meteor.startup(function() {
   };
 
   function relative(fullPath) {
-    return Path.relative(config.sharedFilesPath, fullPath);
+    return Path.relative(util.sharedFilesPath, fullPath);
   };
 
   function addTag(tag) {

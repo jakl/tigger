@@ -22,6 +22,5 @@ accounts-twitter@1.1.11
 shell-server
 twbs:bootstrap
 meteorhacks:picker
-appcache
 tomi:upload-server
 tomi:upload-jquery

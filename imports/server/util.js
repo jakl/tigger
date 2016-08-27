@@ -8,4 +8,4 @@ export const sharedFilesPath = Path.resolve(
 );
 
 export const whitelist = JSON.parse(Assets.getText('whitelist.json'));
-export const userAllowed = id => Meteor.users.findOne(id).services.twitter.screenName in whitelist;
+export const userAllowed = id => whitelist.indexOf(Meteor.users.findOne(id).services.twitter.screenName) >= 0

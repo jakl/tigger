@@ -1,23 +1,22 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Meteor } from 'meteor/meteor';
-
-import collections from '/imports/shared/collections.js';
+import db from '/imports/shared/db.js';
 
 Template.files.onCreated(function filesOnCreated() {
-  // Meteor.subscribe('files');
-  // Files = new Mongo.Collection("files");
+  this.subscribe('files');
+  this.subscribe('tags');
 });
 
 Template.files.helpers({
   files() {
-    return collections.Files.find();
+    return db.Files.find();
   },
 });
 
 Template.files.events({
   'click button'(event, instance) {
-    //$.fileDownload("/dl?name=" + @path + "&id=" + Meteor.user()._id});
+    $.fileDownload(`/dl?name=${this.path}&id=${Meteor.user()._id}`);
   },
 });
 

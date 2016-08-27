@@ -1,14 +1,15 @@
 import { Meteor } from 'meteor/meteor';
-import config from '/imports/server/config.js'
+import util from '/imports/server/util.js'
+import db from '/imports/shared/db.js'
 
 Meteor.publish('files', function() {
-  if (config.userAllowed(this.userId)) {
-    return Files.find();
+  if (util.userAllowed(this.userId)) {
+    return db.Files.find();
   }
 });
 
 Meteor.publish('tags', function() {
-  if (config.userAllowed(this.userId)) {
-    return Tags.find();
+  if (util.userAllowed(this.userId)) {
+    return db.Tags.find();
   }
 });

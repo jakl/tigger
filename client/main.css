@@ -26,3 +26,6 @@ body {
   background-color: #eef;
   border-radius: 10px;
 }
+.login-display-name {
+  color: gray;
+}

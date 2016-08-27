@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import walk from 'simple-walk';
-//import { watch } from 'watchr';
 import FS from 'fs';
 import Path from 'path';
 import util from '/imports/server/util.js'
@@ -42,47 +41,34 @@ Meteor.startup(function() {
   });
 
 
-//   watch({
-//     path: util.sharedFilesPath,
-//     listener: Meteor.bindEnvironment(function(changeType, fullPath) {
-//       var i, j, len, len1, name, relativePath, results, results1, tag, tags;
-//       relativePath = relative(fullPath);
-//       tags = getTags(Path.dirname(relativePath));
-//       switch (changeType) {
-//         case 'create':
-//           if (FS.statSync(fullPath).isFile()) {
-//             name = Path.basename(relativePath);
-//             Files.insert({
-//               name: name,
-//               tags: tags,
-//               path: relativePath
-//             });
-//             results = [];
-//             for (i = 0, len = tags.length; i < len; i++) {
-//               tag = tags[i];
-//               results.push(addTag(tag));
-//             }
-//             return results;
-//           }
-//           break;
-//         case 'delete':
-//           Files.remove({
-//             path: relativePath
-//           });
-//           results1 = [];
-//           for (j = 0, len1 = tags.length; j < len1; j++) {
-//             tag = tags[j];
-//             results1.push(removeTag(tag));
-//           }
-//           return results1;
-//       }
-//     })
-//   });
+  FS.watch(util.sharedFilesPath, { recursive: true },
+    Meteor.bindEnvironment(function(_, path) {
+      const file = Path.basename(path);
+      const tags = getTags(Path.dirname(path));
+      console.log(arguments);
+
+      try {
+        if (FS.statSync(util.sharedFilesPath + '/' + path).isFile()) {
+          db.Files.insert({
+            name: file,
+            tags: tags,
+            path: path
+          });
+          tags.map(addTag);
+        }
+      } catch (undefined) {
+        db.Files.remove({
+          path: path
+        });
+        tags.map(removeTag);
+      }
+    })
+  );
 
 
   function getTags(path) {
     return path.split('/').filter(function(tag) {
-      return tag !== '';
+      return tag !== '' && tag !== '.';
     });
   };
 
@@ -92,17 +78,17 @@ Meteor.startup(function() {
 
   function addTag(tag) {
     try {
-      return Tags.insert({
+      return db.Tags.insert({
         _id: tag
       });
     } catch (undefined) {}
   };
 
   function removeTag(tag) {
-    if (!Files.findOne({
+    if (!db.Files.findOne({
       tags: tag
     })) {
-      return Tags.remove({
+      return db.Tags.remove({
         _id: tag
       });
     }

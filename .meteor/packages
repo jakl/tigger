@@ -17,9 +17,11 @@ standard-minifier-js@1.2.0    # JS minifier run for production mode
 es5-shim@4.6.14                # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.5.8              # Enable ECMAScript2015+ syntax in app code
 
-insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 accounts-ui@1.1.9
 accounts-twitter@1.1.11
 shell-server
 twbs:bootstrap
 meteorhacks:picker
+appcache
+tomi:upload-server
+tomi:upload-jquery

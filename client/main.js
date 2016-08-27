@@ -2,18 +2,16 @@ import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Meteor } from 'meteor/meteor';
 
-import './main.html';
-
-var Files;
+import collections from '/imports/shared/collections.js';
 
 Template.files.onCreated(function filesOnCreated() {
-  Meteor.subscribe('files');
-  Files = new Mongo.Collection("files");
+  // Meteor.subscribe('files');
+  // Files = new Mongo.Collection("files");
 });
 
 Template.files.helpers({
   files() {
-    return ; Files.find();
+    return collections.Files.find();
   },
 });
 

@@ -4,13 +4,16 @@ import { Meteor } from 'meteor/meteor';
 
 import './main.html';
 
+var Files;
+
 Template.files.onCreated(function filesOnCreated() {
-  //  do I need ot sub to files here?
+  Meteor.subscribe('files');
+  Files = new Mongo.Collection("files");
 });
 
 Template.files.helpers({
   files() {
-    return ;//@Files.find();
+    return ; Files.find();
   },
 });
 

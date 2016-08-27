@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "walk": "^2.3.9",
-    "watchr": "^2.6.0"
+    "watchr": "2.4.13"
   }
 }

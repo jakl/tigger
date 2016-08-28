@@ -27,9 +27,9 @@ Meteor.startup(function() {
 
 
   walk.match(util.sharedFilesPath).map(fullPath => {
-    let file = Path.basename(fullPath);
-    let relativePath = relative(fullPath);
-    let tags = getTags(Path.dirname(relativePath));
+    const file = Path.basename(fullPath);
+    const relativePath = relative(fullPath);
+    const tags = getTags(Path.dirname(relativePath));
 
     tags.map(addTag);
 
@@ -45,7 +45,6 @@ Meteor.startup(function() {
     Meteor.bindEnvironment(function(_, path) {
       const file = Path.basename(path);
       const tags = getTags(Path.dirname(path));
-      console.log(arguments);
 
       try {
         if (FS.statSync(util.sharedFilesPath + '/' + path).isFile()) {
@@ -57,10 +56,23 @@ Meteor.startup(function() {
           tags.map(addTag);
         }
       } catch (undefined) {
-        db.Files.remove({
-          path: path
-        });
-        tags.map(removeTag);
+        if (db.Files.remove({path: path})) {
+          // If we removed a file, remove any associated now-empty tags.
+          tags.map(tag => {
+            if (!db.Files.find({tags: tag}).length) {
+              db.Tags.remove({_id: tag});
+            }
+          });
+        } else { // no file was removed, must be a directory
+          const match_deleted_dir = new RegExp(`^${path}`);
+          if (!db.Files.remove({path: {$regex: match_deleted_dir}})) {
+            // We saw a file get deleted that didn't exist in mongo,
+            // so we assumed it was a directory since we don't track those
+            // However we didn't find any stale mongo files inside that directory,
+            // which could just mean that the whole dir content was previously deleted
+            console.error('An empty directory was deleted! If it seems ok, remove this error logging.');
+          }
+        }
       }
     })
   );

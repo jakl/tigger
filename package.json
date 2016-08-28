@@ -2,8 +2,6 @@
   "repository": "github.com/jakl/tigger",
   "license": "GPL-3.0+",
   "dependencies": {
-    "simple-walk": "^0.1.3",
-    "walk": "^2.3.9",
-    "watchr": "2.4.13"
+    "simple-walk": "^0.1.3"
   }
 }

@@ -2,6 +2,7 @@
   "repository": "github.com/jakl/tigger",
   "license": "GPL-3.0+",
   "dependencies": {
+    "heaps-permute": "^2.0.3",
     "simple-walk": "^0.1.3"
   }
 }

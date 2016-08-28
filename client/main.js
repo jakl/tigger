@@ -5,12 +5,10 @@ import db from '/imports/shared/db.js';
 
 Template.files.onCreated(function filesOnCreated() {
   this.subscribe('files');
-  this.subscribe('tags');
 });
 
 Template.tags.onCreated(function tagsOnCreated() {
   this.subscribe('tags');
-  this.subscribe('files');
 });
 
 Template.tags.helpers({

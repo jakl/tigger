@@ -8,6 +8,17 @@ Template.files.onCreated(function filesOnCreated() {
   this.subscribe('tags');
 });
 
+Template.tags.onCreated(function tagsOnCreated() {
+  this.subscribe('tags');
+  this.subscribe('files');
+});
+
+Template.tags.helpers({
+  tags() {
+    return db.Tags.find();
+  }
+})
+
 Template.files.helpers({
   files() {
     return db.Files.find();

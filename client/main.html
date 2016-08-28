@@ -4,25 +4,48 @@
 
 <body>
   {{> navbar}}
-  {{> uploadFile}}
-  {{> files}}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        {{> uploadFile}}
+      </div>
+    </div>
+    <div class="row">
+      {{> files}}
+      {{> tags}}
+    </div>
+  </div>
 </body>
-
 
 <template name="uploadFile">
   {{> upload_bootstrap multiple=true formData=fileUploadAuth }}
 </template>
 
 <template name="files">
-  <div class="container files">
-
+  <div class="col-md-8">
     {{#if Template.subscriptionsReady}}
       {{#each files}}
-        <div class="clearfix pull-left file">
+        <div class="float-left file">
           <button type="button" class="btn btn-info" data-path="{{path}}">
             {{name}}
           </button>
-          {{tags}}
+          {{#each tag in tags}}
+            {{tag}} <span class="glyphicon glyphicon-tag"></span>
+          {{/each}}
+        </div>
+      {{/each}}
+    {{else}}
+      Loading...
+    {{/if}}
+  </div>
+</template>
+
+<template name="tags">
+  <div class="col-md-4">
+    {{#if Template.subscriptionsReady}}
+      {{#each tag in tags}}
+        <div class="tag">
+          {{tag._id}} : {{tag.count}}
         </div>
       {{/each}}
     {{else}}

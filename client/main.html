@@ -6,9 +6,7 @@
   {{> navbar}}
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-4">
-        {{> uploadFile}}
-      </div>
+      {{> uploadForm}}
     </div>
     <div class="row">
       {{> files}}
@@ -16,10 +14,6 @@
     </div>
   </div>
 </body>
-
-<template name="uploadFile">
-  {{> upload_bootstrap multiple=true formData=fileUploadAuth }}
-</template>
 
 <template name="files">
   <div class="col-md-8">
@@ -52,4 +46,13 @@
       Loading...
     {{/if}}
   </div>
+</template>
+
+<template name="uploadForm">
+  {{#with currentUpload}}
+    Uploading <b>{{file.name}}</b>: 
+    <span id="progress">{{progress.get}}%</span>
+  {{else}}
+    <input id="fileInput" type="file" />
+  {{/with}}
 </template>

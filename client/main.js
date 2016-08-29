@@ -29,8 +29,3 @@ Template.files.events({
   },
 });
 
-Template.uploadFile.helpers({
-  fileUploadAuth() {
-    return { userId: Meteor.user() ? Meteor.user()._id : 42 };
-  },
-});

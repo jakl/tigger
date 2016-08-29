@@ -4,7 +4,7 @@ import db from '/imports/shared/db.js'
 
 Meteor.publish('files', function() {
   if (util.userAllowed(this.userId)) {
-    return db.Files.find();
+    return db.Files.find().cursor;
   }
 });
 

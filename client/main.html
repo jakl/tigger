@@ -20,10 +20,12 @@
     {{#if Template.subscriptionsReady}}
       {{#each files}}
         <div class="float-left file">
-          <button type="button" class="btn btn-info" data-path="{{path}}">
-            {{name}}
-          </button>
-          {{#each tag in tags}}
+          <a href="{{link}}?download=true" download="{{name}}" target="_parent">
+            <button type="button" class="btn btn-info">
+              {{name}}
+            </button>
+          </a>
+          {{#each tag in meta.tags}}
             {{tag}} <span class="glyphicon glyphicon-tag"></span>
           {{/each}}
         </div>

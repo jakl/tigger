@@ -50,12 +50,12 @@ exports.setTiggers = setTiggers
  * @param {Array} tiggers List of Tiggers
  * @return {Object} {'anime/movies': [Tigger1, Tigger2]}
  */
-function hashBySortedTags(tiggers) {
+function hashBySortedTags(tiggers = tiggerVault) {
     return hashByTags(tiggers, true)
 }
 exports.hashBySortedTags = hashBySortedTags
 
-function hashByTags(tiggers, sorted = false) {
+function hashByTags(tiggers = tiggerVault, sorted = false) {
     const tagHash = {}
 
     for (let tigger of tiggers) {
@@ -80,7 +80,7 @@ exports.hashByTags = hashByTags
  * @param {Array} tiggers 
  * @return {Array} [[Tigger1, Tigger1dup], [Tigger2], ...]
  */
-function findDups(tiggers) {
+function findDups(tiggers = tiggerVault) {
     const tagHash = hashBySortedTags(tiggers)
     const dupTiggers = []
 
@@ -96,10 +96,11 @@ exports.findDups = findDups
 
 /**
  * Given a list of tiggers, print all redundant paths like anime/movies & movies/anime
+ * This is a shitty useless function cause it'll consider the same directory a dup of itself if it contains more than 1 file
  * @param {Array} tiggers 
  */
-function printDups(tiggers) {
-    const dups = findDups(tiggers)
+function printDups(tiggers = tiggerVault) {
+    const dups = findDups(tiggerVault)
 
     for (let dup of dups) {
         const paths = Object.keys(hashByTags(dup))
@@ -174,6 +175,28 @@ function removeTag(tigger, tag) {
 exports.removeTag = removeTag
 
 /**
+ * Change the name of a tigger to the provided name and update the filesystem
+ * @param {*} tigger 
+ * @param {String} name 
+ */
+function renameTigger(tigger, name) {
+    const dir = path.join(root, tigger.tags.join(path.sep))
+    fs.renameSync(path.join(dir, tigger.name), path.join(dir, name))
+    tigger.name = name
+}
+exports.renameTigger = renameTigger
+
+/**
+ * Delete a tigger from the tiggerVault and rm the coresponding file from the filesystem
+ * @param {*} tigger 
+ */
+function deleteTigger(tigger) {
+    fs.unlinkSync(path.join(root, tigger.tags.join(path.sep), tigger.name))
+    tiggerVault.splice(tiggerVault.indexOf(tigger), 1)
+}
+exports.deleteTigger = deleteTigger
+
+/**
  * Initialize tiggerVault and update after any fs changes are observed
  */
 function initAndWatch() {
@@ -213,5 +236,5 @@ exports.monitorToConsole = monitorToConsole
 if (!module.parent) { // This is run directly from the command line, not required by another code file
     initAndWatch()
     monitorToConsole()
-    printDups(tiggerVault) // Warn the user of possible conflicts, to manually resolve
+    //printDups() // Warn the user of possible conflicts, to manually resolve TODO: Fix this shit
 }

@@ -105,8 +105,47 @@ function testRemoveTag() {
     console.log('testRemoveTag success!')
 }
 
+function testFindDups() {
+    // TODO: Fix this function tiggerUtils.findDups()
+}
+
+function testRenameTigger() {
+    setupTestDir()
+    tiggerUtils.setTiggers()
+    assert.ok(tiggerVault.length == 7)
+
+    tiggerUtils.renameTigger(tiggerVault[0], 'a1.test')
+
+    // Check tiggers
+    assert.deepEqual(tiggerVault[0], {tags: ['a'], name: 'a1.test'})
+
+    // Check filesystem
+    assert.ok(fs.existsSync(path.join(root, 'a', 'a1.test')))
+
+    console.log('testRenameTigger success!')
+}
+
+function testDeleteTigger() {
+    setupTestDir()
+    tiggerUtils.setTiggers()
+    assert.ok(tiggerVault.length == 7)
+
+    const filename = path.join(root, tiggerVault[0].tags.join(path.sep), tiggerVault[0].name)
+    tiggerUtils.deleteTigger(tiggerVault[0])
+
+    // Check tiggers
+    assert.deepEqual(tiggerVault[0], {tags: ['a', 'b'], name: 'ab.test'})
+
+    // Check filesystem
+    assert.ok(!fs.existsSync(filename))
+
+    console.log('testDeleteTigger success!')
+}
+
 if (!module.parent) { // This is run directly from the command line, not required by another code file
     testSetTiggers()
     testAddTag()
     testRemoveTag()
+    testRenameTigger()
+    testDeleteTigger()
 }
